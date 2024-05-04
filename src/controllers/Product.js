@@ -204,10 +204,18 @@ exports.deleteAdminProduct = async (req, res, next) => {
     //Delete product by productId
 
     await Product.findByIdAndDelete(productId);
-    handleUnlinkFile(path.join(__dirname, `../public/${product.img1}`));
-    handleUnlinkFile(path.join(__dirname, `../public/${product.img2}`));
-    handleUnlinkFile(path.join(__dirname, `../public/${product.img3}`));
-    handleUnlinkFile(path.join(__dirname, `../public/${product.img4}`));
+    if (!product.img1.includes("firebase")) {
+      handleUnlinkFile(path.join(__dirname, `../public/${product.img1}`));
+    }
+    if (!product.img2.includes("firebase")) {
+      handleUnlinkFile(path.join(__dirname, `../public/${product.img2}`));
+    }
+    if (!product.img2.includes("firebase")) {
+      handleUnlinkFile(path.join(__dirname, `../public/${product.img3}`));
+    }
+    if (!product.img3.includes("firebase")) {
+      handleUnlinkFile(path.join(__dirname, `../public/${product.img4}`));
+    }
 
     await Product.findByIdAndDelete(productId);
     //Send response to admin - Success
