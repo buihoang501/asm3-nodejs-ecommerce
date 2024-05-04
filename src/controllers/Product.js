@@ -199,14 +199,17 @@ exports.deleteAdminProduct = async (req, res, next) => {
   const { productId } = req.params;
 
   try {
+    const product = await Product.findById(productId);
+
     //Delete product by productId
 
-    const product = await Product.findByIdAndDelete(productId);
+    await Product.findByIdAndDelete(productId);
     handleUnlinkFile(path.join(__dirname, `../public/${product.img1}`));
     handleUnlinkFile(path.join(__dirname, `../public/${product.img2}`));
     handleUnlinkFile(path.join(__dirname, `../public/${product.img3}`));
     handleUnlinkFile(path.join(__dirname, `../public/${product.img4}`));
 
+    await Product.findByIdAndDelete(productId);
     //Send response to admin - Success
     res.status(200).json({ message: "Delete succesfully!" });
   } catch (error) {
