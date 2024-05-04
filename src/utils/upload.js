@@ -10,7 +10,7 @@ const fileStorage = multer.diskStorage({
     cb(null, path.join(__dirname, "../public/images"));
   },
   filename: (req, file, cb) => {
-    cb(null, Math.random().toString() + file.originalname);
+    cb(null, Math.random().toString() + file.originalname.replace(/\s/g, ""));
   },
 });
 

@@ -9,6 +9,8 @@ const { validationResult } = require("express-validator");
 //Socket io
 const io = require("../../socket-io");
 
+const path = require("path");
+
 //Get all products Client Homepage
 exports.getProducts = async (req, res, next) => {
   try {
@@ -191,7 +193,7 @@ exports.patchAdminEditProduct = async (req, res, next) => {
   }
 };
 
-//Admin edit product
+//Admin delete product
 exports.deleteAdminProduct = async (req, res, next) => {
   //ProductId
   const { productId } = req.params;
@@ -199,7 +201,11 @@ exports.deleteAdminProduct = async (req, res, next) => {
   try {
     //Delete product by productId
 
-    await Product.findByIdAndDelete(productId);
+    const product = await Product.findByIdAndDelete(productId);
+    handleUnlinkFile(path.join(__dirname, `../public/${product.img1}`));
+    handleUnlinkFile(path.join(__dirname, `../public/${product.img2}`));
+    handleUnlinkFile(path.join(__dirname, `../public/${product.img3}`));
+    handleUnlinkFile(path.join(__dirname, `../public/${product.img4}`));
 
     //Send response to admin - Success
     res.status(200).json({ message: "Delete succesfully!" });

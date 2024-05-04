@@ -72,7 +72,11 @@ exports.postCreateOrder = async (req, res, next) => {
         let htmlItem = `
           <tr key="${item._id}">
           <td>${item.product.name}</td>
-          <td><img src=${item.product.img} alt=${item.product.name}/></td>
+          <td><img src=${
+            item.product.img.includes("firebase")
+              ? item.product.img
+              : `${process.env.DOMAIN}/${item.product.img}`
+          } alt=${item.product.name}/></td>
          <td>${
            new Intl.NumberFormat()
              .format(item.product.price)
